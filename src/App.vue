@@ -1,47 +1,46 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { reactive } from 'vue';
+import Calculadora from './components/Calculadora.vue';
+
+const estado = reactive({
+  operacao: 'Somar',
+  campoNum1: 0,
+  campoNum2: 0,
+})
+
+const somar = (num1, num2) => num1 + num2;
+const subtrair = (num1, num2) => num1 - num2;
+const dividir = (num1, num2) => num1 / num2;
+const multiplicar = (num1, num2) => num1 * num2;
+
+const getOperacao = () => {
+  const { operacao } = estado;
+
+  switch (operacao) {
+    case 'Somar':
+      return somar(estado.campoNum1, estado.campoNum2);
+    case 'Subtrair':
+      return subtrair(estado.campoNum1, estado.campoNum2);
+    case 'Dividir':
+      return dividir(estado.campoNum1, estado.campoNum2);
+    case 'Multiplicar':
+      return multiplicar(estado.campoNum1, estado.campoNum2);
+  }
+}
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container">
+    <Calculadora :seleciona-operacao="evento => estado.operacao = evento.target.value" :captura-num1="evento => estado.campoNum1 = parseFloat(evento.target.value)" :captura-num2="evento => estado.campoNum2 = parseFloat(evento.target.value)" :renderiza-resultado="getOperacao()" />
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
 }
 </style>
